@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service #keep the stable ip address
+metadata:
+  name: hong-webapp
+
+spec:
+  selector:
+    app: webapp
+
+  ports:
+    - name: http #just helpful label
+      port: 80
+      nodePort: 30080
+    
+  # but for webapp, it needs to be exposed, so we are going to need NodePort
+  # there is such as ClusterPort, LoadBalancer
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hong-queue
+
+spec:
+  selector:
+    app: queue
+    release: "1"
+
+  ports:
+    - name: just-queue
+      port: 8161
+      nodePort: 30010
+  
+  type: NodePort
